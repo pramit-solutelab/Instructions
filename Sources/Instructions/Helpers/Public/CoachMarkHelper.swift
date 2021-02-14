@@ -57,11 +57,9 @@ public class CoachMarkHelper {
         if nextText {
             coachMarkBodyView = CoachMarkBodyDefaultView()
         } else {
-            coachMarkBodyView = CoachMarkBodyDefaultView(hintText: "", nextText: nil)
+            coachMarkBodyView = CoachMarkBodyDefaultView(hintText: NSAttributedString.init(string: ""), nextText: nil)
         }
-
         var coachMarkArrowView: CoachMarkArrowDefaultView?
-
         if arrow { coachMarkArrowView = makeDefaultArrow(withOrientation: arrowOrientation) }
 
         return (bodyView: coachMarkBodyView, arrowView: coachMarkArrowView)
@@ -79,7 +77,7 @@ public class CoachMarkHelper {
     /// - Returns: new instances of the default coach views.
     public func makeDefaultCoachViews(withArrow arrow: Bool = true,
                                       arrowOrientation: CoachMarkArrowOrientation? = .top,
-                                      hintText: String, nextText: String? = nil)
+                                      hintText: NSAttributedString, nextText: String? = nil)
     -> (bodyView: CoachMarkBodyDefaultView, arrowView: CoachMarkArrowDefaultView?) {
         let coachMarkBodyView = CoachMarkBodyDefaultView(hintText: hintText, nextText: nextText)
 
@@ -109,7 +107,10 @@ public class CoachMarkHelper {
                                        pointOfInterest: CGPoint? = nil,
                                        cutoutPathMaker: CutoutPathMaker? = nil) {
         if !flowManager.isPaused || flowManager.currentCoachMark == nil {
-            print(ErrorMessage.Error.updateWentWrong)
+            print("""
+                  [ERROR] Something went wrong, did you call \
+                  `updateCurrentCoachMark()` without pausing the controller first?
+                  """)
             return
         }
 
@@ -167,3 +168,4 @@ public class CoachMarkHelper {
 }
 
 public typealias CutoutPathMaker = (_ frame: CGRect) -> UIBezierPath
+

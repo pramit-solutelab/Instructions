@@ -8,7 +8,7 @@ import UIKit
 /// default one provided by the library.
 public class CoachMarkBodyDefaultView: UIControl,
                                        CoachMarkBodyView {
-    // MARK: Overridden Properties
+    // MARK: Overriden Properties
     public override var isHighlighted: Bool {
         didSet {
             bodyBackground.isHighlighted = isHighlighted
@@ -44,30 +44,24 @@ public class CoachMarkBodyDefaultView: UIControl,
         initializeViewHierarchy()
     }
 
-    public init(frame: CGRect, hintText: String, nextText: String?) {
+    public init(frame: CGRect, hintText: NSAttributedString, nextText: String?) {
         super.init(frame: frame)
         initializeViewHierarchy()
-
         separator.isHidden = (nextText == nil)
         nextLabel.isHidden = (nextText == nil)
-
         nextLabel.text = nextText
-        hintLabel.text = hintText
+        hintLabel.attributedText = hintText
     }
-
-    convenience public init(hintText: String, nextText: String?) {
+    convenience public init(hintText: NSAttributedString, nextText: String?) {
         self.init(frame: CGRect.zero, hintText: hintText, nextText: nextText)
     }
-
     convenience public init() {
         self.init(frame: CGRect.zero)
     }
-
     required public init?(coder aDecoder: NSCoder) {
-        fatalError(ErrorMessage.Fatal.doesNotSupportNSCoding)
+        fatalError("This class does not support NSCoding.")
     }
 }
-
 // MARK: - Private Methods
 private extension CoachMarkBodyDefaultView {
     func initializeViewHierarchy() {
@@ -99,13 +93,11 @@ private extension CoachMarkBodyDefaultView {
     // MARK: Builders
     func makeHintTextView() -> UITextView {
         let textView = UITextView().preparedForAutoLayout()
-        #if targetEnvironment(macCatalyst)
-        #else
+
         textView.layoutManager.hyphenationFactor = 1.0
-        #endif
         textView.textAlignment = .justified
         textView.textColor = InstructionsColor.coachMarkLabel
-        textView.font = UIFont.systemFont(ofSize: 15.0)
+        textView.font = UIFont.init(name: "Poppins-Regular", size: 14)
 
         textView.backgroundColor = .clear
 
@@ -163,3 +155,4 @@ private extension CoachMarkBodyDefaultView {
         return stackView
     }
 }
+
